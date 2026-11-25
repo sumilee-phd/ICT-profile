@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>ICT 자기이해 프로필</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* 레이아웃: 휴대폰 우선 단일 열(최대 760px), 상단 고정 표시줄, 활동은 한 화면에 한 문항 */
+:root{
+  --bg:#f2f5f7; --surface:#ffffff; --ink:#15212b; --muted:#566673; --line:#d5dde4;
+  --accent:#0a6a7a; --accent-ink:#ffffff; --accent-soft:#e0eff2; --signal:#c98a12; --signal-soft:#fbf1dc;
+  --danger:#b4412f;
+  --f-sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e151b; --surface:#16212a; --ink:#e4ecf1; --muted:#92a3b0; --line:#2a3945;
+  --accent:#4cb3c3; --accent-ink:#04232a; --accent-soft:#15343c; --signal:#efb443; --signal-soft:#3a2f17;
+  --danger:#e37d6a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e151b; --surface:#16212a; --ink:#e4ecf1; --muted:#92a3b0; --line:#2a3945;
+  --accent:#4cb3c3; --accent-ink:#04232a; --accent-soft:#15343c; --signal:#efb443; --signal-soft:#3a2f17;
+  --danger:#e37d6a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{font-weight:700;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:8px}
+.brand .tag{font-family:var(--f-mono);font-size:12px;background:var(--accent);color:var(--accent-ink);padding:2px 6px;border-radius:4px;letter-spacing:.04em}
+.top nav{margin-left:auto;display:flex;gap:4px}
+.top nav a{text-decoration:none;color:var(--muted);font-size:14px;padding:6px 10px;border-radius:6px}
+.top nav a[aria-current="page"]{color:var(--accent);background:var(--accent-soft);font-weight:600}
+main{max-width:760px;margin:0 auto;padding-block:20px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
+h1,h2,h3{line-height:1.3;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.6rem,5vw,2.1rem)}
+h2{font-size:1.25rem}
+h3{font-size:1.05rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:14px;min-width:0}
+.hero{display:grid;gap:10px;padding-block:8px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:480px){.grade{grid-template-columns:1fr}}
+.choice{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:12px 14px;text-align:left;cursor:pointer;display:grid;gap:2px}
+.choice b{font-weight:600}
+.choice span{font-size:13px;color:var(--muted)}
+.choice[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font-weight:600;font-size:14px}
+.field .hint{font-size:13px;color:var(--muted)}
+input[type=text],select,textarea{width:100%;border:1.5px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px}
+textarea{min-height:76px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.btn{border:0;border-radius:8px;padding:11px 18px;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.plain{background:transparent;color:var(--muted);padding-inline:8px}
+.btn.danger{background:transparent;color:var(--danger);border:1.5px solid var(--danger)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.acts{display:grid;gap:8px;list-style:none;margin:0;padding:0}
+.act{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);background:var(--surface)}
+.act:hover{border-color:var(--accent)}
+.act .code{font-family:var(--f-mono);font-size:12px;font-weight:600;width:44px;text-align:center;padding:6px 0;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+.act .meta{font-size:13px;color:var(--muted)}
+.pill{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.pill.done{background:var(--accent);color:var(--accent-ink)}
+.pill.todo{background:var(--signal-soft);color:var(--signal)}
+.pill.opt{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .2s}
+.q{font-size:1.2rem;font-weight:600}
+.opts{display:grid;gap:10px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:14px 16px;text-align:left;cursor:pointer;font-size:16px}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.likert{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.likert .opt{text-align:center;padding:12px 4px;font-size:13px;display:grid;gap:2px}
+.likert .opt b{font-family:var(--f-mono);font-size:18px}
+.navq{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.axis{display:grid;gap:4px}
+.axis .lab{display:flex;justify-content:space-between;font-size:14px;gap:8px}
+.axis .track{position:relative;height:10px;background:var(--line);border-radius:99px}
+.axis .track i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:99px}
+.axis .track::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--muted)}
+.code-big{font-family:var(--f-mono);font-size:2rem;font-weight:600;letter-spacing:.12em;color:var(--accent)}
+.hbar{display:grid;grid-template-columns:minmax(0,9.5em) 1fr 2.6em;gap:10px;align-items:center;font-size:14px}
+.hbar .t{height:14px;background:var(--line);border-radius:4px;overflow:hidden}
+.hbar .t i{display:block;height:100%;background:var(--accent)}
+.hbar.top3 .t i{background:var(--signal)}
+.hbar .v{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:620px){.grid2{grid-template-columns:1fr}}
+.kv{display:grid;grid-template-columns:8em 1fr;gap:4px 12px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;min-width:0}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding-left:10px}
+.prompt{font-family:var(--f-mono);font-size:13px;min-height:220px;white-space:pre-wrap;background:var(--bg)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:20}
+.confirm{border:1.5px solid var(--danger);border-radius:8px;padding:12px;display:grid;gap:8px}
+.sample{background:var(--signal-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:14px}
+.proj{border:1px dashed var(--line);border-radius:8px;padding:12px;display:grid;gap:10px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  .top,.noprint,.toast{display:none!important}
+  body{background:#fff;color:#000}
+  main{padding:0;max-width:none}
+  .panel{border-color:#bbb;break-inside:avoid}
+}
+</style>
+
+<header class="top noprint">
+  <div class="in">
+    <a class="brand" href="#home"><span class="tag">ICT</span>자기이해 프로필</a>
+    <nav aria-label="주 메뉴">
+      <a href="#home" id="nav-home">활동 목록</a>
+      <a href="#result" id="nav-result">종합 결과</a>
+    </nav>
+  </div>
+</header>
+<main id="app" aria-live="polite"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+/* ───────── 문항 데이터 ───────── */
+const GRADES={
+  g1:{label:"1학년",sub:"신입생",short:"1학년"},
+  g2:{label:"2학년",sub:"졸업·취업 준비",short:"2학년"},
+  etc:{label:"전공심화·기타",sub:"학사과정·재입학·비학위",short:"전공심화·기타"}
+};
+const DEPTS=["정보통신학과","정보보안학과","AI소프트웨어학과","기타"];
+
+const PREF_POLES={
+  E:{n:"대화 정리",d:"다른 사람과 이야기하면서 생각을 정리하는 경향임."},
+  I:{n:"혼자 정리",d:"혼자 생각을 정리한 뒤 의견을 내는 경향임."},
+  S:{n:"사실·절차",d:"확인된 사실과 정해진 순서를 기준으로 정보를 받아들이는 경향임."},
+  N:{n:"구조·가능성",d:"전체 구조와 원리, 앞으로의 변화에 먼저 주목하는 경향임."},
+  T:{n:"기준·논리",d:"일관된 기준과 효율을 우선해 판단하는 경향임."},
+  F:{n:"관계·가치",d:"사람에게 미치는 영향과 팀 분위기를 함께 고려해 판단하는 경향임."},
+  J:{n:"미리 계획",d:"일정과 순서를 미리 정하고 진행하는 경향임."},
+  P:{n:"상황 조정",d:"상황 변화에 맞춰 방법을 바꾸며 진행하는 경향임."}
+};
+const AXES=[["E","I"],["S","N"],["T","F"],["J","P"]];
+/* [상황, 앞 극 문장, 뒤 극 문장, 축번호] */
+const PREF_ITEMS=[
+  ["팀 과제 아이디어가 나오지 않을 때","팀원과 이야기하면서 생각을 정리한다","혼자 메모하면서 생각을 정리한다",0],
+  ["새 장비 사용법을 익힐 때","설명서 순서대로 하나씩 따라 한다","전체 구조를 먼저 파악하고 시도한다",1],
+  ["팀원의 결과물에 오류가 있을 때","오류 내용을 정확하게 말한다","상대가 받아들이기 쉬운 표현을 먼저 고민한다",2],
+  ["과제가 나왔을 때","일정을 정하고 일찍 시작한다","마감이 가까워지면 집중해서 처리한다",3],
+  ["쉬는 시간에","친구들과 대화하며 쉰다","혼자 음악이나 영상으로 쉰다",0],
+  ["수업 설명 중 이해가 잘 되는 것은","실제 사례와 구체적인 수치","원리와 다른 개념과의 연결",1],
+  ["조장으로서 결정할 때","효율과 기준을 먼저 본다","팀원 의견과 분위기를 먼저 본다",2],
+  ["시험 기간에","과목별 공부 일정표를 만든다","그날 상황에 맞춰 공부할 과목을 고른다",3],
+  ["처음 만난 실습 조에서","먼저 말을 걸어 대화를 시작한다","상황을 살핀 뒤 대화에 참여한다",0],
+  ["과제 결과물을 만들 때","요구사항을 정확하게 충족한다","요구사항에 새로운 시도를 더한다",1],
+  ["듣고 싶은 칭찬은","정확하고 논리적이다","배려심이 있고 함께하기 편하다",2],
+  ["여행을 갈 때","일정과 장소를 미리 정한다","도착해서 상황을 보고 정한다",3],
+  ["수업 중 질문이 생기면","그 자리에서 바로 질문한다","정리해 두었다가 나중에 묻거나 찾아본다",0],
+  ["장비가 동작하지 않는 원인을 찾을 때","확인된 사실부터 하나씩 점검한다","가능성이 큰 원인을 먼저 추정하고 검증한다",1],
+  ["친구가 고민을 이야기하면","해결 방법을 먼저 제시한다","먼저 이야기를 끝까지 들어 준다",2],
+  ["파일과 자료를 관리할 때","정해진 폴더에 바로 정리한다","필요할 때 검색해서 찾는다",3],
+  ["주말을 보낸 뒤 에너지가 생기는 쪽은","사람을 많이 만난 주말","혼자 보낸 시간이 있는 주말",0],
+  ["관심이 가는 기술 이야기는","지금 바로 쓸 수 있는 기술","앞으로 바뀔 기술의 방향",1],
+  ["규칙의 예외를 요청받으면","원칙을 그대로 적용한다","개인 사정을 함께 고려한다",2],
+  ["계획이 갑자기 바뀌면","계획을 다시 세워야 마음이 편하다","바뀐 상황에 맞춰 바로 움직인다",3]
+];
+
+const TEAM_TYPES={
+  D:{n:"추진형",d:"목표와 결론을 먼저 세우고 속도를 내는 역할임. 팀의 방향 설정과 마감 관리에 강점이 있음.",tip:"결정 전에 팀원 의견을 확인하는 시간을 둘 것."},
+  I:{n:"소통형",d:"분위기를 만들고 아이디어를 많이 내는 역할임. 발표와 팀원 참여 유도에 강점이 있음.",tip:"회의에서 정한 내용을 기록으로 남길 것."},
+  S:{n:"지원형",d:"맡은 일을 꾸준히 끝내고 팀원 사이를 조율하는 역할임. 협력과 중재에 강점이 있음.",tip:"본인 의견도 분명하게 말할 것."},
+  C:{n:"검증형",d:"기준과 자료를 확인하고 오류를 줄이는 역할임. 정확성과 품질 관리에 강점이 있음.",tip:"완성도와 마감 사이에서 우선순위를 정할 것."}
+};
+/* [상황, D, I, S, C] */
+const TEAM_ITEMS=[
+  ["팀 과제 첫 회의에서 나는","목표와 역할부터 정하자고 한다","분위기를 띄우고 아이디어를 많이 낸다","다른 사람 의견을 듣고 맞춰 간다","과제 조건과 평가 기준부터 확인한다"],
+  ["마감이 다가오면","우선순위를 정해 일을 밀고 나간다","팀원을 독려하며 함께 속도를 낸다","맡은 부분을 꾸준히 끝낸다","빠진 항목이 없는지 점검표로 확인한다"],
+  ["팀 안에서 의견이 부딪히면","결론을 빨리 내자고 제안한다","대화로 분위기를 풀어 본다","양쪽 의견을 조율한다","근거 자료를 비교해 본다"],
+  ["맡고 싶은 역할은","팀장","발표 담당","일정·연락 담당","자료 조사·검토 담당"],
+  ["실습 장비가 동작하지 않을 때","다른 방법으로 바로 진행한다","주변에 도움을 요청해 함께 해결한다","안내에 따라 차례대로 다시 해 본다","증상을 기록하며 원인을 하나씩 점검한다"],
+  ["들으면 기분 좋은 말은","추진력이 있다","함께하면 즐겁다","믿고 맡길 수 있다","꼼꼼하고 정확하다"],
+  ["가장 불편한 상황은","일이 진척되지 않을 때","혼자서만 일해야 할 때","계획이 갑자기 바뀔 때","기준이 분명하지 않을 때"],
+  ["발표를 준비할 때","핵심 결론 위주로 구성한다","청중의 반응을 끌어낼 방법을 고민한다","팀원과 역할을 나누어 연습한다","자료의 정확성부터 검증한다"],
+  ["새 동아리나 모임에서","직접 활동을 제안하고 이끈다","여러 사람과 금방 친해진다","몇 사람과 꾸준히 관계를 이어 간다","모임의 목적과 규칙부터 파악한다"],
+  ["결정을 내릴 때","빠르게 결정한다","사람들의 반응을 보고 결정한다","모두가 동의하는 쪽으로 결정한다","자료를 비교한 뒤 결정한다"],
+  ["팀원에게 의견을 줄 때","직접적으로 말한다","긍정적인 부분부터 말한다","부드럽게 조심스럽게 말한다","구체적인 근거와 함께 말한다"],
+  ["과제를 제출한 뒤","다음 목표로 바로 넘어간다","팀원과 결과를 공유하고 축하한다","남은 자료와 파일을 정리한다","제출물의 오류를 다시 확인한다"]
+];
+
+const LEARN_TYPES={
+  V:{n:"시각·도식형",d:"그림, 표, 구성도로 정리할 때 이해가 빠른 편임.",tip:"네트워크 구성도와 데이터 흐름을 직접 그려 볼 것. 교재 그림을 보지 않고 다시 그려 보는 방식이 효과적임."},
+  K:{n:"실습·조작형",d:"직접 입력하고 만들어 볼 때 이해가 빠른 편임.",tip:"명령어와 코드를 직접 입력하고 오류 메시지를 기록할 것. 같은 실습을 처음부터 다시 해 보는 방식이 효과적임."},
+  R:{n:"읽기·정리형",d:"글을 읽고 요약할 때 이해가 빠른 편임.",tip:"장마다 용어 정의표와 요약 노트를 만들 것. 문제 해설을 끝까지 읽는 방식이 효과적임."},
+  A:{n:"설명·토론형",d:"듣고 말하고 설명할 때 이해가 빠른 편임.",tip:"스터디에서 설명하는 역할을 맡을 것. 개념을 소리 내어 설명해 보는 방식이 효과적임."}
+};
+/* [상황, V, K, R, A] */
+const LEARN_ITEMS=[
+  ["새 개념을 이해할 때 도움이 되는 것은","그림과 도식","직접 해 보기","교재를 읽고 정리하기","설명을 듣거나 다른 사람에게 설명하기"],
+  ["시험 공부를 할 때","표나 구조도로 정리한다","문제 풀이와 실습을 반복한다","요약 노트를 만든다","친구와 묻고 답한다"],
+  ["기억에 오래 남는 수업은","화면 자료와 영상이 많은 수업","실습이 많은 수업","판서와 교재 정리가 분명한 수업","토론과 질의응답이 많은 수업"],
+  ["명령어나 코드를 익힐 때","실행 결과 화면을 비교한다","직접 입력하고 오류를 고친다","명령어 표를 정리한다","동작 원리를 말로 설명해 본다"],
+  ["처음 가는 장소를 찾을 때","지도를 본다","일단 가 보면서 찾는다","글로 된 안내를 읽는다","다른 사람에게 묻는다"],
+  ["결석한 수업 내용을 보충할 때","강의 자료의 그림을 본다","실습 파일을 따라 해 본다","친구의 필기를 읽는다","친구에게 설명을 듣는다"],
+  ["어려운 문제를 만나면","그림으로 그려 본다","여러 방법으로 직접 시도한다","풀이 글을 찾아 읽는다","질문해서 해결한다"],
+  ["찾아보는 온라인 강의는","도식과 애니메이션이 많은 강의","따라 하기 실습 강의","요약 자료를 주는 강의","설명이 자세한 강의"]
+];
+
+const FIELDS={
+  NET:{n:"네트워크·서버 운용",jobs:"네트워크 엔지니어, 서버·시스템 관리자, IT 기술지원",certs:"네트워크관리사 2급, 리눅스마스터 2급, CCNA"},
+  FAC:{n:"정보통신 설비·시공",jobs:"정보통신 설비 시공·유지보수, 통신사 현장 기술직, 감리 보조",certs:"정보통신산업기사, 통신선로산업기사"},
+  SW:{n:"소프트웨어 개발",jobs:"응용 소프트웨어 개발자, 웹 개발자, 테스트 엔지니어",certs:"정보처리산업기사, SQLD"},
+  SEC:{n:"정보보안",jobs:"보안관제 요원, 보안 솔루션 운영, 정보보호 담당",certs:"정보보안산업기사, 네트워크관리사 2급"},
+  IOT:{n:"IoT·임베디드·무선",jobs:"임베디드 소프트웨어 개발, IoT 장비 설치·운영, 무선 통신 시험",certs:"무선설비산업기사, 정보통신산업기사"},
+  DATA:{n:"데이터·AI 활용",jobs:"데이터 분석 보조, AI 서비스 운영, 사무 자동화 담당",certs:"ADsP, 사무자동화산업기사, 컴퓨터활용능력 1급"}
+};
+const FIELD_ITEMS=[
+  ["NET","공유기와 스위치를 연결해 네트워크를 구성하는 일"],
+  ["SW","프로그램을 작성해 반복 작업을 자동화하는 일"],
+  ["FAC","건물 안 통신 케이블 경로를 설계하고 포설하는 일"],
+  ["SEC","해킹 사례를 보고 공격 원리를 분석하는 일"],
+  ["IOT","센서와 보드(아두이노·라즈베리파이)로 장치를 만드는 일"],
+  ["DATA","데이터를 모아 표와 그래프로 정리하는 일"],
+  ["NET","인터넷이 끊긴 원인을 찾아 복구하는 일"],
+  ["FAC","랜 케이블과 광케이블을 직접 제작하고 측정하는 일"],
+  ["SW","웹 페이지나 앱 화면을 만드는 일"],
+  ["IOT","와이파이·블루투스 신호 세기를 측정하는 일"],
+  ["SEC","방화벽과 접근 권한을 설정하는 일"],
+  ["DATA","AI 도구로 문서 작성과 업무를 자동화하는 일"],
+  ["SW","코드의 오류를 찾아 고치는 일"],
+  ["NET","서버를 설치하고 계정과 서비스를 관리하는 일"],
+  ["IOT","드론이나 로봇을 프로그램으로 제어하는 일"],
+  ["FAC","현장에서 통신 장비를 설치하고 시험하는 일"],
+  ["DATA","생성형 AI로 이미지·영상·발표 자료를 만드는 일"],
+  ["SEC","서버 기록(로그)을 보고 이상 징후를 찾는 일"],
+  ["FAC","정보통신 공사 도면과 설계 기준을 읽는 일"],
+  ["SW","알고리즘 문제를 풀고 더 빠른 방법을 찾는 일"],
+  ["IOT","장치에서 모은 데이터를 앱으로 원격 확인하는 일"],
+  ["NET","리눅스·윈도우 서버 명령어를 익히는 일"],
+  ["SEC","개인정보와 보안 규정이 지켜지는지 점검하는 일"],
+  ["DATA","측정 데이터에서 규칙과 경향을 찾는 일"]
+];
+const LIKERT=[[1,"전혀 아님"],[2,"아님"],[3,"보통"],[4,"그런 편"],[5,"매우 그러함"]];
+
+const TESTS={
+  pref:{code:"PREF",title:"정보 처리 선호",ref:"MBTI 개념 참고 · 창작 문항",guide:"두 행동 모두 할 수 있어도 평소 먼저 택하는 쪽을 고를 것.",n:PREF_ITEMS.length,min:4},
+  team:{code:"TEAM",title:"팀 프로젝트 역할",ref:"DISC 개념 참고 · 창작 문항",guide:"팀 과제·실습·동아리 상황을 떠올리고 가장 가까운 행동 하나를 고를 것.",n:TEAM_ITEMS.length,min:3},
+  learn:{code:"STUDY",title:"학습 방식",ref:"학습 선호 개념 참고 · 창작 문항",guide:"공부할 때 실제로 하는 방식에 가장 가까운 것 하나를 고를 것.",n:LEARN_ITEMS.length,min:2},
+  field:{code:"FIELD",title:"ICT 직무 흥미",ref:"정보통신 분야 직무 기준 · 창작 문항",guide:"잘하는지보다 해 보고 싶은 정도를 기준으로 고를 것.",n:FIELD_ITEMS.length,min:4},
+  record:{code:"REC",title:"나의 기록",ref:"직접 입력",guide:"",n:0,min:7}
+};
+const ORDER={
+  g1:[["pref","권장"],["learn","권장"],["team","권장"],["field","권장"],["record","권장"]],
+  g2:[["field","권장"],["team","권장"],["pref","권장"],["record","권장"],["learn","선택"]],
+  etc:[["field","권장"],["team","권장"],["pref","권장"],["record","권장"],["learn","선택"]]
+};
+
+/* ───────── 상태 ───────── */
+const KEY="ictProfile.v1";
+function blank(){return{profile:{grade:"",dept:"",nick:""},ans:{pref:[],team:[],learn:[],field:[]},rec:{projects:[{},{},{}]}}}
+let S=load();
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY));if(v&&v.ans)return Object.assign(blank(),v)}catch(e){}return blank()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $=s=>document.querySelector(s);
+const inFrame=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+let SAMPLE=null; /* 예시 결과 보기용 */
+
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>el.hidden=true,2200)}
+function done(st,id){if(id==="record")return recFilled(st);const a=st.ans[id];return a&&a.length===TESTS[id].n&&a.every(v=>v!=null)}
+function recFilled(st){const r=st.rec||{};const g1=grade(st)==="g1";const keys=(g1?REC_G1:REC_G2).map(x=>x[0]);
+  return keys.some(k=>String(r[k]||"").trim())||(!g1&&(r.projects||[]).some(p=>p&&String(p.name||"").trim()))}
+function grade(st){return st.profile.grade||"g1"}
+
+/* ───────── 채점 ───────── */
+function scorePref(st){
+  const c=[0,0,0,0];
+  PREF_ITEMS.forEach((it,i)=>{if(st.ans.pref[i]===AXES[it[3]][0])c[it[3]]++});
+  return AXES.map((ax,k)=>{const a=c[k],b=5-a;return{ax,a,b,win:a>=3?ax[0]:ax[1]}});
+}
+function countKeys(arr,keys){const c={};keys.forEach(k=>c[k]=0);arr.forEach(v=>{if(v in c)c[v]++});return keys.map(k=>[k,c[k]]).sort((x,y)=>y[1]-x[1])}
+function scoreTeam(st){return countKeys(st.ans.team,["D","I","S","C"])}
+function scoreLearn(st){return countKeys(st.ans.learn,["V","K","R","A"])}
+function scoreField(st){
+  const s={};Object.keys(FIELDS).forEach(k=>s[k]=0);
+  FIELD_ITEMS.forEach((it,i)=>{s[it[0]]+=Number(st.ans.field[i]||0)});
+  return Object.entries(s).sort((a,b)=>b[1]-a[1]);
+}
+
+/* ───────── 결과 블록 ───────── */
+function prefBlock(st){
+  const r=scorePref(st);const code=r.map(x=>x.win).join("");
+  return `<div class="panel"><div class="eyebrow">PREF · 정보 처리 선호</div>
+  <div class="row"><span class="code-big">${code}</span><span class="muted small">MBTI 개념을 참고한 선호 조합</span></div>
+  ${r.map(x=>{const pa=PREF_POLES[x.ax[0]],pb=PREF_POLES[x.ax[1]];const left=x.a>=x.b;const w=Math.abs(x.a-x.b)/5*50;
+    return `<div class="axis"><div class="lab"><span>${x.ax[0]} · ${pa.n} <b>${x.a}</b></span><span><b>${x.b}</b> ${x.ax[1]} · ${pb.n}</span></div>
+    <div class="track" aria-hidden="true"><i style="${left?`right:50%;width:${w}%`:`left:50%;width:${w}%`}"></i></div>
+    <p class="small muted">${PREF_POLES[x.win].d}</p></div>`}).join("")}
+  </div>`;
+}
+function typeBlock(eyebrow,title,sorted,TYPES,n){
+  const [p,s]=sorted;const tp=TYPES[p[0]];const tie=s&&s[1]===p[1];
+  return `<div class="panel"><div class="eyebrow">${eyebrow}</div>
+  <h3>${tp.n}${tie?` · ${TYPES[s[0]].n}`:""}</h3>
+  <p>${tp.d}</p>${tie?`<p>${TYPES[s[0]].d}</p>`:""}
+  <p class="note">${tp.tip}</p>
+  ${sorted.map(([k,v])=>`<div class="hbar"><span>${TYPES[k].n}</span><span class="t"><i style="width:${v/n*100}%"></i></span><span class="v">${v}</span></div>`).join("")}
+  </div>`;
+}
+function teamBlock(st){return typeBlock("TEAM · 팀 프로젝트 역할","",scoreTeam(st),TEAM_TYPES,TEAM_ITEMS.length)}
+function learnBlock(st){return typeBlock("STUDY · 학습 방식","",scoreLearn(st),LEARN_TYPES,LEARN_ITEMS.length)}
+function fieldBlock(st){
+  const r=scoreField(st);
+  return `<div class="panel"><div class="eyebrow">FIELD · ICT 직무 흥미 (분야별 4~20점)</div>
+  ${r.map(([k,v],i)=>`<div class="hbar ${i<3?"top3":""}"><span>${FIELDS[k].n}</span><span class="t"><i style="width:${v/20*100}%"></i></span><span class="v">${v}</span></div>`).join("")}
+  <div class="grid2">${r.slice(0,3).map(([k],i)=>`<div class="proj"><b>${i+1}위 · ${FIELDS[k].n}</b>
+    <div class="small"><span class="muted">관련 직무</span><br>${FIELDS[k].jobs}</div>
+    <div class="small"><span class="muted">관련 자격 예시</span><br>${FIELDS[k].certs}</div></div>`).join("")}</div>
+  <p class="note">자격별 응시자격과 시행 일정은 Q-net 등 시행기관 공고로 확인할 것.</p></div>`;
+}
+const BLOCKS={pref:prefBlock,team:teamBlock,learn:learnBlock,field:fieldBlock};
+
+/* ───────── 화면: 홈 ───────── */
+function viewHome(){
+  const g=S.profile.grade;
+  const list=g?ORDER[g]:ORDER.g1;
+  const req=list.filter(x=>x[1]==="권장");const nDone=req.filter(x=>done(S,x[0])).length;
+  return `
+  <section class="hero">
+    <div class="eyebrow">ICT폴리텍대학 · 멘토링 자기이해 활동</div>
+    <h1>ICT 자기이해 프로필</h1>
+    <p class="muted">성향·팀 역할·학습 방식·직무 흥미를 점검하고, 결과를 한 번에 모아 제미나이 인포그래픽 요청문으로 내보내는 활동임. 공식 심리검사가 아니며 이번 응답의 경향만 보여 줌.</p>
+  </section>
+  <section class="panel">
+    <h2>기본 정보</h2>
+    <div class="field"><label id="lb-grade">학년</label>
+      <div class="grade" role="group" aria-labelledby="lb-grade">
+      ${Object.entries(GRADES).map(([k,v])=>`<button type="button" class="choice" data-grade="${k}" aria-pressed="${g===k}"><b>${v.label}</b><span>${v.sub}</span></button>`).join("")}
+      </div></div>
+    <div class="two">
+      <div class="field"><label for="f-dept">학과</label>
+        <select id="f-dept"><option value="">선택</option>${DEPTS.map(d=>`<option ${S.profile.dept===d?"selected":""}>${d}</option>`).join("")}</select></div>
+      <div class="field"><label for="f-nick">별칭</label>
+        <input id="f-nick" type="text" maxlength="20" placeholder="예: 랜선장인" value="${esc(S.profile.nick)}">
+        <span class="hint">실명·학번 대신 별칭 사용</span></div>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>활동 순서</h2><span class="pill ${nDone===req.length?"done":"todo"}">권장 ${req.length}개 중 ${nDone}개 완료</span></div>
+    ${g?"":`<p class="small muted">학년을 고르면 학년별 순서로 바뀜.</p>`}
+    <ul class="acts">
+    ${list.map(([id,kind])=>{const t=TESTS[id];const ok=done(S,id);
+      const meta=id==="record"?(g&&g!=="g1"?"자격증·프로젝트·희망 직무 입력":"입학 동기·목표 자격증 입력"):`${t.n}문항 · 약 ${t.min}분`;
+      return `<li><a class="act" href="#${id}"><span class="code">${t.code}</span><span><b>${t.title}</b><br><span class="meta">${meta}</span></span>
+      <span class="pill ${ok?"done":kind==="선택"?"opt":"todo"}">${ok?"완료":kind}</span></a></li>`}).join("")}
+    </ul>
+    <div class="row"><a class="btn" href="#${(list.find(x=>!done(S,x[0]))||list[0])[0]}">${nDone?"이어서 하기":"시작"}</a>
+      <a class="btn ghost" href="#result">종합 결과</a>
+      <button type="button" class="btn plain" id="b-sample">예시 결과 보기</button></div>
+  </section>
+  <p class="note">응답은 이 기기의 브라우저에만 저장되며 서버로 전송하지 않음. 실습실 공용 PC에서는 마지막에 종합 결과 화면의 「응답 지우기」를 누를 것.</p>`;
+}
+function bindHome(){
+  document.querySelectorAll("[data-grade]").forEach(b=>b.onclick=()=>{S.profile.grade=b.dataset.grade;save();render()});
+  $("#f-dept").onchange=e=>{S.profile.dept=e.target.value;save()};
+  $("#f-nick").oninput=e=>{S.profile.nick=e.target.value;save()};
+  $("#b-sample").onclick=()=>{SAMPLE=sampleState();location.hash="result";if(location.hash==="#result")render()};
+}
+
+/* ───────── 화면: 문항 ───────── */
+const pos={};
+function itemOptions(id,i){
+  if(id==="pref"){const it=PREF_ITEMS[i],ax=AXES[it[3]];return{q:it[0],opts:[[ax[0],it[1]],[ax[1],it[2]]]}}
+  if(id==="team"||id==="learn"){const it=(id==="team"?TEAM_ITEMS:LEARN_ITEMS)[i];const keys=id==="team"?["D","I","S","C"]:["V","K","R","A"];
+    const o=keys.map((k,j)=>[k,it[j+1]]);const r=i%4;return{q:it[0],opts:o.slice(r).concat(o.slice(0,r))}}
+  return{q:FIELD_ITEMS[i][1]};
+}
+function viewQuiz(id){
+  const t=TESTS[id];const a=S.ans[id];
+  if(pos[id]==null){const f=a.findIndex((v,k)=>v==null);pos[id]=done(S,id)?-1:(f<0?Math.min(a.length,t.n-1):f)}
+  if(pos[id]===-1)return viewTestDone(id);
+  const i=pos[id];const it=itemOptions(id,i);const cur=a[i];
+  const answered=a.filter(v=>v!=null).length;
+  const body=id==="field"
+    ?`<p class="q">${esc(it.q)}</p><p class="small muted">이 일을 해 보고 싶은 정도</p>
+      <div class="likert" role="group" aria-label="응답">${LIKERT.map(([v,l])=>`<button type="button" class="opt" data-v="${v}" aria-pressed="${cur===v}"><b>${v}</b>${l}</button>`).join("")}</div>`
+    :`<p class="q">${esc(it.q)}</p><div class="opts" role="group" aria-label="응답">${it.opts.map(([k,txt])=>`<button type="button" class="opt" data-v="${k}" aria-pressed="${cur===k}">${esc(txt)}</button>`).join("")}</div>`;
+  return `<section class="hero"><div class="eyebrow">${t.code} · ${t.ref}</div><h1>${t.title}</h1><p class="muted">${t.guide}</p></section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><span class="small muted">${i+1} / ${t.n}</span><span class="small muted">응답 ${answered}개</span></div>
+    <div class="bar" aria-hidden="true"><i style="width:${answered/t.n*100}%"></i></div>
+    ${body}
+    <div class="navq"><button type="button" class="btn plain" id="b-prev" ${i===0?"disabled":""}>이전 문항</button>
+      <button type="button" class="btn ghost" id="b-next" ${cur==null?"disabled":""}>${i===t.n-1?"결과 보기":"다음 문항"}</button></div>
+  </section>`;
+}
+function bindQuiz(id){
+  const t=TESTS[id];
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const v=id==="field"?Number(b.dataset.v):b.dataset.v;S.ans[id][pos[id]]=v;save();
+    document.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    setTimeout(()=>{if(pos[id]<t.n-1)pos[id]++;else if(done(S,id))pos[id]=-1;render()},170);
+  });
+  const p=$("#b-prev");if(p)p.onclick=()=>{pos[id]--;render()};
+  const n=$("#b-next");if(n)n.onclick=()=>{if(pos[id]<t.n-1)pos[id]++;else if(done(S,id))pos[id]=-1;render()};
+}
+function nextOf(id){const l=ORDER[grade(S)];const k=l.findIndex(x=>x[0]===id);const nx=l.slice(k+1).concat(l.slice(0,k)).find(x=>!done(S,x[0])&&x[1]==="권장");return nx?nx[0]:"result"}
+function viewTestDone(id){
+  const t=TESTS[id];const nx=nextOf(id);
+  return `<section class="hero"><div class="eyebrow">${t.code} · 완료</div><h1>${t.title} 결과</h1>
+  <p class="muted">잘 맞는 장면 하나, 맞지 않는 장면 하나를 떠올려 볼 것. 결과는 성격을 정하는 판정이 아니라 이번 응답의 경향임.</p></section>
+  ${BLOCKS[id](S)}
+  <div class="row noprint"><a class="btn" href="#${nx}">${nx==="result"?"종합 결과 보기":"다음 활동: "+TESTS[nx].title}</a>
+  <button type="button" class="btn plain" id="b-redo">다시 응답</button><a class="btn plain" href="#home">활동 목록</a></div>`;
+}
+function bindTestDone(id){const r=$("#b-redo");if(r)r.onclick=()=>{S.ans[id]=[];pos[id]=0;save();render()}}
+
+/* ───────── 화면: 나의 기록 ───────── */
+const REC_G1=[
+  ["keywords","나를 나타내는 단어 3개","예: 꼼꼼함, 게임, 조립"],
+  ["motive","입학 동기","정보통신 분야를 고른 이유"],
+  ["interest","관심 있는 수업·분야","예: 네트워크 실습, 파이썬"],
+  ["certGoal","1학년 목표 자격증","예: 네트워크관리사 2급"],
+  ["semGoal","이번 학기 목표 1개","측정 가능한 목표로 작성"],
+  ["hobby","좋아하는 것·잘하는 것","취미, 아르바이트 경험 등"]
+];
+const REC_G2=[
+  ["keywords","나를 나타내는 단어 3개","예: 끈기, 현장 경험, 리눅스"],
+  ["job","희망 직무","예: 네트워크 엔지니어, 통신 설비 시공"],
+  ["certDone","취득 자격증","자격명과 취득 연월"],
+  ["certPlan","준비 중인 자격증","자격명과 응시 예정 시기"],
+  ["activity","대회·현장실습·동아리","활동명, 기간, 맡은 일"],
+  ["goal","졸업 전 목표","예: 산업기사 필기 합격, 포트폴리오 완성"]
+];
+function viewRecord(){
+  const g=grade(S);const r=S.rec;const fields=g==="g1"?REC_G1:REC_G2;
+  const area=k=>["motive","semGoal","activity","goal","hobby"].includes(k);
+  const projs=g==="g1"?"":`<div class="field"><label>프로젝트·실습 경험 (최대 3건)</label><span class="hint">수업 실습, 팀 과제, 경진대회 출품작 모두 해당. 결과는 사실만 작성할 것.</span></div>
+    ${[0,1,2].map(i=>{const p=r.projects[i]||{};return `<div class="proj"><b class="small">경험 ${i+1}</b><div class="two">
+      ${[["name","이름","예: 학과 전파지도 측정"],["role","내 역할","예: 측정 데이터 정리"],["tools","사용 도구·기술","예: 라즈베리파이, 파이썬"],["result","결과","예: 24지점 측정 완료"]].map(([k,l,ph])=>
+      `<div class="field"><label for="p${i}-${k}">${l}</label><input type="text" id="p${i}-${k}" data-p="${i}" data-k="${k}" placeholder="${ph}" value="${esc(p[k])}"></div>`).join("")}
+      </div></div>`}).join("")}`;
+  return `<section class="hero"><div class="eyebrow">REC · 직접 입력 · ${GRADES[g].short}</div><h1>나의 기록</h1>
+  <p class="muted">${g==="g1"?"새 학기 자기소개와 1학년 목표를 정리하는 칸임.":"취업 포트폴리오 첫 장에 들어갈 사실 자료를 정리하는 칸임."} 입력 내용은 자동 저장됨. 연락처·주소·학번은 쓰지 말 것.</p></section>
+  <section class="panel">
+    ${fields.map(([k,l,ph])=>`<div class="field"><label for="r-${k}">${l}</label>${area(k)
+      ?`<textarea id="r-${k}" data-r="${k}" placeholder="${ph}">${esc(r[k])}</textarea>`
+      :`<input type="text" id="r-${k}" data-r="${k}" placeholder="${ph}" value="${esc(r[k])}">`}</div>`).join("")}
+    ${projs}
+  </section>
+  <section class="panel">
+    <h2>공식 검사 결과 연결 <span class="pill opt">선택</span></h2>
+    <p class="small">국가 기관의 무료 진로검사 결과를 함께 넣으면 인포그래픽 근거가 늘어남. ${g==="g1"?"1학년은 학기 중 한 번 해 볼 것을 권장함.":"2학년은 취업 상담 전에 해 볼 것을 권장함."}</p>
+    <ul class="small" style="margin:0;padding-left:1.2em">
+      <li>고용24 직업심리검사(직업선호도검사 등): <a href="https://www.work24.go.kr" target="_blank" rel="noopener">work24.go.kr</a></li>
+      <li>커리어넷 진로심리검사: <a href="https://www.career.go.kr" target="_blank" rel="noopener">career.go.kr</a></li>
+    </ul>
+    <div class="field"><label for="r-ext">검사 결과 요약</label><textarea id="r-ext" data-r="ext" placeholder="예: 직업선호도검사 흥미코드 RI, 추천 직업 네트워크 관리자">${esc(r.ext)}</textarea></div>
+  </section>
+  <div class="row"><a class="btn" href="#result">종합 결과 보기</a><a class="btn plain" href="#home">활동 목록</a></div>`;
+}
+function bindRecord(){
+  document.querySelectorAll("[data-r]").forEach(el=>el.oninput=()=>{S.rec[el.dataset.r]=el.value;save()});
+  document.querySelectorAll("[data-p]").forEach(el=>el.oninput=()=>{const i=+el.dataset.p;S.rec.projects[i]=S.rec.projects[i]||{};S.rec.projects[i][el.dataset.k]=el.value;save()});
+}
+
+/* ───────── 종합 결과와 내보내기 ───────── */
+function summaryText(st){
+  const g=grade(st),P=st.profile,L=[];
+  L.push(`[기본 정보] 별칭: ${P.nick||"(미입력)"} / ${P.dept||"학과 미입력"} / ${GRADES[g].short}`);
+  if(done(st,"pref")){const r=scorePref(st);L.push(`[정보 처리 선호] ${r.map(x=>x.win).join("")} — `+r.map(x=>`${x.win} ${PREF_POLES[x.win].n}(${Math.max(x.a,x.b)}/5)`).join(", "))}
+  if(done(st,"team")){const r=scoreTeam(st);L.push(`[팀 프로젝트 역할] 주 역할 ${TEAM_TYPES[r[0][0]].n}, 보조 역할 ${TEAM_TYPES[r[1][0]].n} (`+r.map(([k,v])=>`${TEAM_TYPES[k].n} ${v}`).join(", ")+`/12)`)}
+  if(done(st,"learn")){const r=scoreLearn(st);L.push(`[학습 방식] ${LEARN_TYPES[r[0][0]].n} — ${LEARN_TYPES[r[0][0]].tip}`)}
+  if(done(st,"field")){const r=scoreField(st);L.push(`[ICT 직무 흥미, 분야별 20점 만점] `+r.map(([k,v])=>`${FIELDS[k].n} ${v}`).join(", "));
+    L.push(`[흥미 상위 3개 분야의 관련 직무] `+r.slice(0,3).map(([k])=>`${FIELDS[k].n}: ${FIELDS[k].jobs}`).join(" / "))}
+  const r=st.rec||{};const fields=g==="g1"?REC_G1:REC_G2;
+  fields.forEach(([k,l])=>{if(String(r[k]||"").trim())L.push(`[${l}] ${r[k].trim()}`)});
+  if(g!=="g1")(r.projects||[]).forEach((p,i)=>{if(p&&p.name)L.push(`[경험 ${i+1}] ${p.name} / 역할: ${p.role||"-"} / 도구: ${p.tools||"-"} / 결과: ${p.result||"-"}`)});
+  if(String(r.ext||"").trim())L.push(`[공식 진로검사 결과] ${r.ext.trim()}`);
+  return L.join("\n");
+}
+function promptText(st){
+  const g=grade(st),nick=st.profile.nick||"나";
+  const head=g==="g1"
+?`다음은 ICT폴리텍대학 1학년 학생의 자기이해 활동 결과입니다. 이 자료만 사용해서 A4 세로 한 장 분량의 한국어 자기소개 인포그래픽을 그려 주세요.
+
+[조건]
+- 제목: ${nick}의 ICT 프로필
+- 구성: ① 나를 나타내는 단어 ② 정보 처리 선호 ③ 팀 프로젝트 역할 ④ 학습 방식과 공부 방법 ⑤ 관심 분야 상위 3개(막대그래프) ⑥ 1학년 목표와 목표 자격증
+- 자료에 없는 수상·경력·수치는 만들지 말 것
+- 실명·학번·연락처는 넣지 말 것
+- 한국어 글자가 깨지지 않도록 큰 글씨, 짧은 명사형 문구 사용`
+:`다음은 ICT폴리텍대학 ${g==="g2"?"2학년":"재학생"} 학생의 자기이해·경력 자료입니다. 이 자료만 사용해서 취업 포트폴리오 첫 장으로 쓸 A4 세로 한 장 분량의 한국어 인포그래픽을 그려 주세요.
+
+[조건]
+- 제목: ${nick}의 ICT 직무 프로필
+- 구성: ① 희망 직무와 직무 흥미 상위 3개(막대그래프) ② 취득·준비 자격증 ③ 프로젝트·실습 경험 ④ 협업 스타일(팀 프로젝트 역할) ⑤ 강점 단어 3개 ⑥ 졸업 전 목표
+- 성향 유형 글자는 작게, 직무·자격·경험을 크게 배치
+- 자료에 없는 수상·경력·수치·회사명은 만들지 말 것
+- 실명·학번·연락처는 넣지 말 것
+- 한국어 글자가 깨지지 않도록 큰 글씨, 짧은 명사형 문구 사용`;
+  return head+"\n\n[결과 자료]\n"+summaryText(st);
+}
+function viewResult(){
+  const st=SAMPLE||S;const g=grade(st);const list=ORDER[g];
+  const missing=list.filter(x=>x[1]==="권장"&&!done(st,x[0]));
+  const r=st.rec||{};const fields=g==="g1"?REC_G1:REC_G2;
+  const recRows=fields.filter(([k])=>String(r[k]||"").trim()).map(([k,l])=>`<dt>${l}</dt><dd>${esc(r[k])}</dd>`).join("")
+    +(g!=="g1"?(r.projects||[]).filter(p=>p&&p.name).map((p,i)=>`<dt>경험 ${i+1}</dt><dd>${esc(p.name)} · ${esc(p.role||"-")} · ${esc(p.tools||"-")} · ${esc(p.result||"-")}</dd>`).join(""):"")
+    +(String(r.ext||"").trim()?`<dt>공식 검사</dt><dd>${esc(r.ext)}</dd>`:"");
+  return `${SAMPLE?`<div class="sample noprint">예시 결과 화면임. 실제 응답이 아닌 가상 학생 자료이며 저장되지 않음. <button type="button" class="btn plain" id="b-unsample">내 결과로 돌아가기</button></div>`:""}
+  <section class="hero"><div class="eyebrow">MY ICT PROFILE · ${GRADES[g].short}${st.profile.dept?" · "+esc(st.profile.dept):""}</div>
+    <h1>${esc(st.profile.nick||"이름 없는 프로필")}의 종합 결과</h1>
+    ${missing.length?`<p class="muted noprint">남은 권장 활동: ${missing.map(x=>`<a href="#${x[0]}">${TESTS[x[0]].title}</a>`).join(", ")}</p>`:`<p class="muted">권장 활동을 모두 완료함.</p>`}</section>
+  ${g==="g1"
+    ?["pref","learn","team","field"].filter(id=>done(st,id)).map(id=>BLOCKS[id](st)).join("")
+    :["field","team","pref","learn"].filter(id=>done(st,id)).map(id=>BLOCKS[id](st)).join("")}
+  ${recRows?`<div class="panel"><div class="eyebrow">REC · 나의 기록</div><dl class="kv">${recRows}</dl></div>`:""}
+  <section class="panel noprint">
+    <h2>제미나이 인포그래픽 요청문</h2>
+    <p class="small">아래 글을 복사해 제미나이에 붙여 넣으면 됨. ${g==="g1"?"1학년 자기소개용":"취업 포트폴리오 첫 장용"} 구성으로 자동 작성됨. PDF 여러 개를 올리는 대신 이 글 하나로 충분함.</p>
+    <textarea class="prompt" id="prompt" readonly>${esc(promptText(st))}</textarea>
+    <div class="row"><button type="button" class="btn" id="b-copy">요청문 복사</button>
+      ${inFrame?"":`<button type="button" class="btn ghost" id="b-txt">텍스트 파일 저장</button><button type="button" class="btn ghost" id="b-print">결과 PDF 저장</button>`}</div>
+    ${inFrame?`<p class="note">미리보기 화면에서는 파일 저장과 인쇄가 제한됨. 학생 배포 주소에서는 텍스트 파일 저장과 PDF 저장 버튼이 함께 표시됨.</p>`:""}
+  </section>
+  ${SAMPLE?"":`<section class="panel noprint">
+    <h2>응답 보관과 삭제</h2>
+    <p class="small">다른 기기로 옮기거나 다음 학기에 비교하려면 백업 파일을 보관할 것.</p>
+    <div class="row">${inFrame?"":`<button type="button" class="btn ghost" id="b-backup">백업 파일 저장</button>`}
+      <label class="btn ghost" for="f-restore">백업 불러오기</label><input type="file" id="f-restore" accept=".json,application/json" hidden>
+      <button type="button" class="btn danger" id="b-clear">응답 지우기</button></div>
+    <div id="clearbox"></div>
+  </section>`}`;
+}
+function download(name,text,type){const b=new Blob([text],{type});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function fileBase(st){return `ICT프로필_${(st.profile.nick||"학생").replace(/[\\/:*?"<>|\s]/g,"")}`}
+function bindResult(){
+  const st=SAMPLE||S;
+  const u=$("#b-unsample");if(u)u.onclick=()=>{SAMPLE=null;render()};
+  $("#b-copy").onclick=async()=>{const t=$("#prompt");try{await navigator.clipboard.writeText(t.value);toast("요청문을 복사함")}catch(e){t.focus();t.select();toast("글이 선택됨. 길게 눌러 복사할 것")}};
+  const tx=$("#b-txt");if(tx)tx.onclick=()=>download(fileBase(st)+".txt",promptText(st),"text/plain;charset=utf-8");
+  const pr=$("#b-print");if(pr)pr.onclick=()=>window.print();
+  const bk=$("#b-backup");if(bk)bk.onclick=()=>download(fileBase(st)+"_백업.json",JSON.stringify(S,null,1),"application/json");
+  const rs=$("#f-restore");if(rs)rs.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{const v=JSON.parse(fr.result);if(!v.ans||!v.profile)throw 0;S=Object.assign(blank(),v);Object.keys(pos).forEach(k=>delete pos[k]);save();render();toast("백업을 불러옴")}catch(err){toast("백업 파일 형식이 아님")}};fr.readAsText(f)};
+  const cl=$("#b-clear");if(cl)cl.onclick=()=>{$("#clearbox").innerHTML=`<div class="confirm"><p class="small">이 기기에 저장된 모든 응답과 기록을 지움. 백업 파일이 없으면 되돌릴 수 없음.</p><div class="row"><button type="button" class="btn danger" id="b-clear2">모두 지우기</button><button type="button" class="btn plain" id="b-cancel">취소</button></div></div>`;
+    $("#b-cancel").onclick=()=>$("#clearbox").innerHTML="";
+    $("#b-clear2").onclick=()=>{S=blank();Object.keys(pos).forEach(k=>delete pos[k]);try{localStorage.removeItem(KEY)}catch(e){}location.hash="home";render();toast("응답을 지움")}};
+}
+
+/* 예시 자료: 가상 2학년 학생 */
+function sampleState(){
+  const st=blank();st.profile={grade:"g2",dept:"정보통신학과",nick:"예시학생"};
+  st.ans.pref=PREF_ITEMS.map((it,i)=>{const ax=AXES[it[3]];const pick=[1,0,0,0][it[3]];return i%5===4?ax[1-pick]:ax[pick]});
+  st.ans.team=["C","C","S","C","C","S","D","C","S","C","C","S"];
+  st.ans.learn=["K","K","K","V","V","K","K","V"];
+  const prof={NET:5,FAC:4,IOT:4,SEC:3,SW:2,DATA:3};st.ans.field=FIELD_ITEMS.map(([k],i)=>Math.max(1,Math.min(5,prof[k]-(i%3===0?1:0))));
+  st.rec={keywords:"꼼꼼함, 현장 측정, 리눅스",job:"네트워크 엔지니어",certDone:"네트워크관리사 2급(예시)",certPlan:"정보통신산업기사 필기(예시)",activity:"학과 경진대회 팀 측정 담당(예시)",goal:"산업기사 필기 합격, 포트폴리오 완성",
+    projects:[{name:"교내 무선 신호 측정(예시)",role:"측정 데이터 정리",tools:"라즈베리파이, 파이썬",result:"측정 지점별 신호표 작성"},{name:"실습실 네트워크 구성(예시)",role:"스위치 설정",tools:"패킷트레이서",result:"VLAN 2개 구성"},{}]};
+  return st;
+}
+
+/* ───────── 라우팅 ───────── */
+const VIEWS=["home","pref","team","learn","field","record","result"];
+function render(){
+  let v=(location.hash||"#home").slice(1);if(!VIEWS.includes(v))v="home";
+  if(v!=="result")SAMPLE=null;
+  const app=$("#app");
+  if(v==="home"){app.innerHTML=viewHome();bindHome()}
+  else if(v==="record"){app.innerHTML=viewRecord();bindRecord()}
+  else if(v==="result"){app.innerHTML=viewResult();bindResult()}
+  else{app.innerHTML=viewQuiz(v);if(pos[v]===-1)bindTestDone(v);else bindQuiz(v)}
+  $("#nav-home").toggleAttribute("aria-current",v!=="result");if(v!=="result")$("#nav-home").setAttribute("aria-current","page");
+  if(v==="result")$("#nav-result").setAttribute("aria-current","page");else $("#nav-result").removeAttribute("aria-current");
+}
+let lastView="";
+window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);if(v!==lastView){Object.keys(pos).forEach(k=>{if(k===v&&done(S,k))pos[k]=-1})}lastView=v;render();window.scrollTo(0,0)});
+render();
+</script>
+
+</html>
